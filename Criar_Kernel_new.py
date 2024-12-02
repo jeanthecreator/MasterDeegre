@@ -73,8 +73,8 @@ def visualize_kernels(kernels, grid_size, kernel_size=(31, 31)):
 
 # Parâmetros ajustados para mais combinações de kernels
 scales = np.linspace(0.5, 1.0, 5)  # Mais passos para escala
-eccentricities = np.linspace(0.5, 1.0, 5)  # Mais passos para excentricidade
-angles = np.arange(0, 180, 10)  # Ângulos com intervalos menores
+eccentricities = np.linspace(0.5, 1.0, 1)  # Mais passos para excentricidade
+angles = np.arange(90, 270, 10)  # Ângulos com intervalos menores
 
 # Geração dos kernels
 output_folder = create_kernels(scales, eccentricities, angles, output_folder="kernels")
