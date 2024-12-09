@@ -19,7 +19,7 @@ def correlate_with_kernels(image, kernels):
 
     for kernel in kernels:
         # Correlação cruzada com cada kernel
-        response = cv2.filter2D(image, -1, kernel)
+        response = cv2.filter2D(image, -1, kernel, anchor=(-1, -1), delta=0, borderType=cv2.BORDER_CONSTANT)
         correlation_maps.append(response)
 
     # Seleção do máximo
@@ -76,6 +76,7 @@ correlation_map = correlate_with_kernels(original_image, kernels)
 
 # Extrair os picos do mapa de correlação
 peaks = extract_peaks(correlation_map, threshold=0.5, min_distance=10)
+
 
 def highlight_grains_on_image(image, peaks, kernel_size=(31, 31)):
     """
