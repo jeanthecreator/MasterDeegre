@@ -75,7 +75,7 @@ original_image = cv2.imread("C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/
 correlation_map = correlate_with_kernels(original_image, kernels)
 
 # Extrair os picos do mapa de correlação
-peaks = extract_peaks(correlation_map, threshold=0.5, min_distance=10)
+peaks = extract_peaks(correlation_map, threshold=0.9, min_distance=10)
 
 
 def highlight_grains_on_image(image, peaks, kernel_size=(31, 31)):
