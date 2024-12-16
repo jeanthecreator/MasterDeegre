@@ -29,6 +29,8 @@ def generate_ellipse_kernels(sizes, eccentricities, angles, image_size=(200, 200
                 # Desenhar elipse
                 cv2.ellipse(kernel, center, (major_axis, minor_axis), angle, 0, 360, 255, -1)
                 kernels.append((kernel, size_labels[size_idx], ecc_labels[ecc_idx], angle))
+
+                
     return kernels
 
 # Parâmetros

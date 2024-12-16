@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial import distance
 from skimage import io
+import os
 
 def map_pixel_colors(image, foreground_colors, background_colors):
     """
@@ -48,25 +49,34 @@ def map_pixel_colors(image, foreground_colors, background_colors):
 # Exemplo de uso
 if __name__ == "__main__":
     # Carregar imagem (Fig. 2a)
-    image_path = "path/to/input/image.jpg"  # Substitua pelo caminho da imagem
+    image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/feijao1.png"  # Substitua pelo caminho da imagem
     input_image = io.imread(image_path)
 
     # Definir cores do primeiro plano (feijões) e plano de fundo manualmente
     foreground_colors = [
-        [120, 80, 50],  # Exemplo de cores do feijão
+        [120, 80, 50],
+        [128,128,128],  # Exemplo de cores do feijão
         [130, 90, 60],
+        [169,169,169]
+       
         # Adicione mais cores aqui
     ]
 
     background_colors = [
         [200, 200, 200],  # Exemplo de cores de fundo
         [220, 220, 220],
+        [240, 240, 240]
         # Adicione mais cores aqui
     ]
 
     # Processar a imagem
     output_image = map_pixel_colors(input_image, foreground_colors, background_colors)
 
+    # Definir a pasta e o arquivo de saída
+    output_folder = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/" 
+    os.makedirs(output_folder, exist_ok=True)  # Cria a pasta se não existir
+    output_path = os.path.join(output_folder, "bean_output.png")
+
     # Salvar ou visualizar a imagem resultante
-    output_path = "path/to/output/image.jpg"  # Substitua pelo caminho de saída
+    # output_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/"  # Substitua pelo caminho de saída
     io.imsave(output_path, output_image.astype(np.uint8))

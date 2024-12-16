@@ -4,83 +4,45 @@ import cv2
 import math
 import matplotlib.pyplot as plt
 
-def generate_elliptical_kernel_with_borders(size, angle):
+def generate_ellipse_kernels(sizes, eccentricities, angles, image_size=(200, 200), output_folder="kernels"):
     """
-    Gera um kernel elíptico com borda branca, centro preto e fundo cinza.
-
-    Args:
-    - size: tamanho do kernel (altura, largura).
-    - angle: ângulo de rotação do elipse em graus.
-
-    Retorna:
-    - kernel: imagem 2D representando o kernel elíptico.
-    """
-    h, w = size
-    y, x = np.ogrid[-h//2:h//2, -w//2:w//2]
-    
-    # Rotação do elipse
-    theta = np.deg2rad(angle)
-    x_rot = x * np.cos(theta) - y * np.sin(theta)
-    y_rot = x * np.sin(theta) + y * np.cos(theta)
-    
-    # Criar o centro preto da elipse
-    inner_ellipse = (x_rot**2 / (w//7)**2) + (y_rot**2 / (h//3)**2) <= 1
-    
-    # Criar a borda branca ao redor
-    outer_ellipse = (x_rot**2 / (w//6)**2) + (y_rot**2 / (h//2.5)**2) <= 1
-    
-    # Construir o kernel com três camadas: cinza (fundo), preto (centro) e branco (borda)
-    kernel = np.zeros_like(x_rot, dtype=float) + 0.5  # Fundo cinza
-    kernel[outer_ellipse] = 0.0  # Borda branca
-    kernel[inner_ellipse] = 1.0  # Centro preto
-
-    return kernel
-
-def create_kernels(scales, eccentricities, angles, size, output_folder="kernels"):
-    """
-    Gera e salva kernels elípticos para segmentação baseada em correlação.
-
-    Args:
-    - scales: lista de tamanhos relativos (0 a 1).
-    - eccentricities: lista de razões de excentricidade (0 a 1).
-    - angles: lista de ângulos de rotação (em graus).
-    - size: dimensão do kernel (deve ser ímpar, como 31x31).
-    - output_folder: pasta onde os kernels serão salvos.
-
-    Retorna:
-    - kernels: lista de kernels gerados.
+    Gera kernels de elipses baseados em tamanhos, excentricidades e ângulos.
+    :param sizes: Lista de tamanhos (pequeno, normal, grande).
+    :param eccentricities: Lista de fatores de excentricidade.
+    :param angles: Lista de ângulos para rotação.
+    :param image_size: Tamanho da imagem para o kernel.
+    :return: Lista de imagens com kernels.
     """
     kernels = []
-    h, w = size
-    center = (w // 2, h // 2)
+    size_labels = ["small", "normal", "large"]
+    ecc_labels = ["low_ecc", "med_ecc", "high_ecc"]
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
-
-    for scale in scales:
-        for ecc in eccentricities:
+    
+    for size_idx, size in enumerate(sizes):
+        for ecc_idx, ecc in enumerate(eccentricities):
             for angle in angles:
-                # Gerar o kernel com bordas usando a função anterior
-                kernel = generate_elliptical_kernel_with_borders(size, angle)
-
-                # Ajustar escala e excentricidade
-                mask = np.zeros((h, w), dtype=np.float32)
-                axes = (int(scale * w // 2), int(scale * w // 2 * ecc))
-                cv2.ellipse(mask, center, axes, angle, 0, 360, 1, -1)
-
-                # Balancear áreas positivas e negativas
-                positive = mask > 0
-                mask[positive] = 0.5 / np.sum(positive)  # Pixels brancos: +0.5
-                mask[~positive] = -0.5 / np.sum(~positive)  # Pixels pretos: -0.5
+                # Criar imagem em branco
+                kernel = np.zeros(image_size, dtype=np.uint8)
+                center = (image_size[0] // 2, image_size[1] // 2)
+                
+                # Definir dimensões da elipse
+                major_axis = int(size * (1 + ecc))  # Eixo maior ajustado pela excentricidade
+                minor_axis = int(size / (1 + ecc))  # Eixo menor ajustado
+                
+                # Desenhar elipse
+                cv2.ellipse(kernel, center, (major_axis, minor_axis), angle, 0, 360, 255, -1)
+                kernels.append((kernel, size_labels[size_idx], ecc_labels[ecc_idx], angle))
 
                 # Salvar o kernel
-                kernel_name = f"kernel_scale{scale:.2f}_ecc{ecc:.2f}_angle{angle}.npy"
+                kernel_name = f"kernel_scale{size:.2f}_ecc{ecc:.2f}_angle{angle}.npy"
                 np.save(os.path.join(output_folder, kernel_name), kernel)
                 kernels.append(kernel)
 
     return output_folder
 
-def visualize_kernels(kernels, grid_size, kernel_size=(41, 41)):
+def visualize_kernels(kernels, grid_size, kernel_size=(200, 200)):
     """
     Cria uma única imagem consolidada para visualizar todos os kernels gerados.
 
@@ -106,14 +68,13 @@ def visualize_kernels(kernels, grid_size, kernel_size=(41, 41)):
 
     return consolidated_image
 
-# Parâmetros de geração
-scales = np.linspace(0.8, 1.6, 6)#[0.6, 0.8, 1.0]  # Escalas dos kernels
-eccentricities = np.linspace(0.5, 1.0, 1)#[0.5, 0.7, 1.0]  # Excentricidades
-angles = np.arange(90, 280, 10)#[0, 45, 90]  # Ângulos de rotação
-size = (41, 41)  # Tamanho do kernel (deve ser ímpar)
+# Parâmetros
+sizes = [50, 80, 110]  # Tamanhos pequeno, normal e grande
+eccentricities = [0.3, 0.6, 0.9]  # Excentricidades baixa, média e alta
+angles = list(range(10, 181, 10))  # Ângulos de 0 a 180 graus
 
-# Gerar e salvar kernels
-output_folder = create_kernels(scales, eccentricities, angles, size)
+# Gerar kernels
+output_folder = generate_ellipse_kernels(sizes, eccentricities, angles, output_folder="kernels")
 
 # Carregar kernels gerados
 kernel_files = sorted(os.listdir(output_folder))
