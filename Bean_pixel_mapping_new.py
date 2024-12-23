@@ -80,8 +80,8 @@ def map_pixel_colors(image, foreground_image, background_image, n_colors=5):
 if __name__ == "__main__":
     # Carregar imagens
     image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/feijao1.png"  # Substitua pelo caminho da imagem principal
-    foreground_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/cor_feijao.png"  # Substitua pelo caminho da imagem de feijão
-    background_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/imagem_fundo.png"  # Substitua pelo caminho da imagem de fundo
+    foreground_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/10_BRANCO_Zoom_40.bmp"  # Substitua pelo caminho da imagem de feijão
+    background_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Imagem_fundo_PB.png"  # Substitua pelo caminho da imagem de fundo
 
     input_image = io.imread(image_path)
     input_image_lab = rgb2lab(input_image)
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     background_image = io.imread(background_path)
 
     # Processar a imagem
-    output_image = map_pixel_colors(input_image_lab, foreground_image, background_image, n_colors=6)
+    output_image = map_pixel_colors(input_image, foreground_image, background_image, n_colors=6)
 
     # Normalizar os valores entre 0 e 1
     output_image_normalized = output_image / 255.0

@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from scipy.ndimage import maximum_filter, label
+import os
 
 # Função para realizar correlação entre a imagem e os kernels
 def correlate_with_kernels(image, kernels):
@@ -104,7 +105,7 @@ def main(image_path, kernels):
     - kernels: lista de kernels gerados.
     """
     # Carregar a imagem original (em BGR)
-    original_image = cv2.imread("C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/feijao1.png")
+    original_image = cv2.imread("C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/bean_output_new.png")
 
     # Converter a imagem para escala de cinza para correlação
     gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
@@ -123,9 +124,10 @@ def main(image_path, kernels):
     print("Imagem final salva como 'highlighted_grains_final.png'.")
 
 
-# Exemplo de uso: Defina os kernels e o caminho da imagem
-kernels = [np.ones((31, 31), dtype=np.float32)]  # Exemplo de kernel simples (substitua pelos kernels reais)
+# # Exemplo de uso: Defina os kernels e o caminho da imagem
+kernel_files = sorted(os.listdir("kernels"))
+kernels = [np.load(os.path.join("kernels", f)) for f in kernel_files]
 image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/feijao1.png"  # Substitua pelo caminho correto da sua imagem
 
-# Rodar o processo
+# # Rodar o processo
 main(image_path, kernels)

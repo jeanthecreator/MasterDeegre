@@ -28,7 +28,7 @@ def correlate_with_kernels(image, kernels):
     return correlation_map
 
 # Carregar a imagem de entrada (em tons de cinza)
-input_image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/feijao1.png"  # Substitua pelo caminho da sua imagem
+input_image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/bean_output_new.png"  # Substitua pelo caminho da sua imagem
 image = cv2.imread(input_image_path, cv2.IMREAD_GRAYSCALE)
 
 # Carregar os kernels gerados
