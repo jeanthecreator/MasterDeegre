@@ -1,0 +1,10 @@
+"C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images/feijao1.png"
+C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/kernel_paths/template_00.png
+C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images_comp_bean
+C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images_comp_bg
+
+
+image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images/feijao1.png"  # Substitua pela imagem real
+grain_samples_folder = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images_comp_bean/"  # Pasta com exemplos de feijões
+background_samples_folder = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images_comp_bg/"  # Pasta com exemplos de fundo
+kernel_folder = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/kernel_paths/"  # Pasta com os kernels
