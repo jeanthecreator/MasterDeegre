@@ -8,3 +8,5 @@ image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/I
 grain_samples_folder = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images_comp_bean/"  # Pasta com exemplos de feijões
 background_samples_folder = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images_comp_bg/"  # Pasta com exemplos de fundo
 kernel_folder = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/kernel_paths/"  # Pasta com os kernels
+
+image_path = "C:/Users/jsantos1/OneDrive - QuidelOrtho/Documents/Mestrado/Code/Images/1_speckle.bmp"
